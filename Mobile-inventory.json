@@ -1,0 +1,433 @@
+{
+  "name": "Mobile-inventory",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        0
+      ],
+      "id": "83447de8-82db-451d-b2c1-a7195ba4b432",
+      "name": "When chat message received",
+      "webhookId": "b7711262-b9e3-4f9f-9cb2-62000b05331d"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        0
+      ],
+      "id": "27a08cd7-1370-4954-841b-dcdcfe56c9f8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        208
+      ],
+      "id": "5992c34f-a3de-4640-bf0b-fb8a81e643f4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "B7yyXzkF57xhMLvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        208
+      ],
+      "id": "f4d2b64c-cf5d-4361-bfbc-e013f84c8d9a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "it should be able to search the airtable",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app09XsNEQgNO2VsF",
+          "mode": "list",
+          "cachedResultName": "Mobile Accessories Management",
+          "cachedResultUrl": "https://airtable.com/app09XsNEQgNO2VsF"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblmlFYnUfSr7ubn4",
+          "mode": "list",
+          "cachedResultName": "Accessories",
+          "cachedResultUrl": "https://airtable.com/app09XsNEQgNO2VsF/tblmlFYnUfSr7ubn4"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        160,
+        160
+      ],
+      "id": "115c49f2-f860-46a2-ad93-00097dfe9203",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "nXSOY568oyNlITh4",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "update the items",
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app09XsNEQgNO2VsF",
+          "mode": "list",
+          "cachedResultName": "Mobile Accessories Management",
+          "cachedResultUrl": "https://airtable.com/app09XsNEQgNO2VsF"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblmlFYnUfSr7ubn4",
+          "mode": "list",
+          "cachedResultName": "Accessories",
+          "cachedResultUrl": "https://airtable.com/app09XsNEQgNO2VsF/tblmlFYnUfSr7ubn4"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $fromAI(\"recordID\",\"find the exct id of the item and maybe update when required\") }}",
+            "Stock Level": "={{ $fromAI(\"newStock\",\"update the stock quantity in airtable\", \"number\") }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Accessory Name",
+              "displayName": "Accessory Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Accessory Type",
+              "displayName": "Accessory Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Charger",
+                  "value": "Charger"
+                },
+                {
+                  "name": "Case",
+                  "value": "Case"
+                },
+                {
+                  "name": "Cable",
+                  "value": "Cable"
+                },
+                {
+                  "name": "Headphones",
+                  "value": "Headphones"
+                },
+                {
+                  "name": "Adapter",
+                  "value": "Adapter"
+                },
+                {
+                  "name": "Screen Protector",
+                  "value": "Screen Protector"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Model Number",
+              "displayName": "Model Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Photo",
+              "displayName": "Photo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Stock Level",
+              "displayName": "Stock Level",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Assigned To",
+              "displayName": "Assigned To",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Requests",
+              "displayName": "Requests",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Total Assignments",
+              "displayName": "Total Assignments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Currently Assigned",
+              "displayName": "Currently Assigned",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Available Stock",
+              "displayName": "Available Stock",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Pending Requests",
+              "displayName": "Pending Requests",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Last Assigned Date",
+              "displayName": "Last Assigned Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Most Recent Request Date",
+              "displayName": "Most Recent Request Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Accessory Utilization Rate (%)",
+              "displayName": "Accessory Utilization Rate (%)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Assignment Summary (AI)",
+              "displayName": "Assignment Summary (AI)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Security Risk Assessment (AI)",
+              "displayName": "Security Risk Assessment (AI)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        64,
+        208
+      ],
+      "id": "3569623e-ff9a-4ffa-a241-e6f2d7e15848",
+      "name": "Update record in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "nXSOY568oyNlITh4",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d1f9ca29-2948-44a8-8fa3-b454f67be830",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "67052a4a10b0c187dd9d12d0b82ed8280df3e8e29aa460ffa1042dce58f86fa7"
+  },
+  "id": "R1Z4qcfH6NDbdHMw",
+  "tags": []
+}
