@@ -1,4 +1,5 @@
 📊 n8n Automation – AI Chatbot + Airtable Inventory Manager
+
 🚀 Overview
 
 This project contains an n8n workflow that integrates a chatbot powered by Google Gemini 2.5 API with Airtable to manage and update stock/inventory records efficiently.
@@ -57,7 +58,7 @@ Response → Chatbot replies with confirmation/result
 
 Clone this repo:
 
-git clone https://github.com/your-username/n8n-automation.git
+git clone https://github.com/samx2777/N8N-Mobile-Inventory-agent
 cd n8n-automation
 
 
